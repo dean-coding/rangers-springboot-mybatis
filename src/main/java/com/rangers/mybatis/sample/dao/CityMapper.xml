@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.rangers.mybatis.sample.dao.CityMapper">
+	<sql id="columns">
+		a.id,
+		a.name,
+		a.state
+	</sql>
+
+	<resultMap type="City" id="CityMap">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="state" property="state" />
+		<collection property="countrys" ofType="Country">
+			<id column="tid" property="id" />
+			<result column="tcityId" property="cityId" />
+			<result column="tname" property="name" />
+		</collection>
+	</resultMap>
+
+	<select id="findByNameDefine" resultType="City">
+		select
+		<include refid="columns" />
+		from city a
+		where a.name = #{name}
+	</select>
+
+	<select id="findById" resultType="City">
+		select
+		<include refid="columns" />
+		from city a
+		where a.id = #{id}
+	</select>
+
+	<select id="selectAll" resultType="City">
+		select
+		<include refid="columns" />
+		from city a
+	</select>
+	
+	<select id="selectAllDetail" resultMap="CityMap">
+		select
+		<include refid="columns" />
+		,t.id as 'tid',
+		t.city_id as 'tcityId',
+		t.name as 'tname'
+		from city a
+		left join country t on t.city_id = a.id
+	</select>
+
+	<insert id="save" keyProperty="id" useGeneratedKeys="true"
+		parameterType="City">
+		insert into
+		`city`
+		(
+		name,
+		state
+		)
+		values(
+		#{name},
+		#{state}
+		)
+	</insert>
+
+</mapper>

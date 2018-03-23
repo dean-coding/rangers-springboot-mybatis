@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:test}
+    username: ${MYSQL_USERNAME:root}
+    password: ${MYSQL_PASSWORD:root}
+mybatis:
+  config-location: classpath:conf/mybatis-config.xml
+  type-aliases-package: com.rangers.mybatis.sample.pojo
+  mapper-locations: classpath:com.rangers.mybatis.sample.dao/**/*.xml
